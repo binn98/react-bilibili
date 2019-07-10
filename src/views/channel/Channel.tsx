@@ -1,6 +1,6 @@
 import * as React from "react";
 import { match } from "react-router-dom";
-import Helmet from "react-helmet";
+import { Helmet } from "react-helmet";
 import { History } from "history";
 import Header from "../../components/header/Header";
 import TabBar from "../../components/tab-bar/TabBar";
@@ -148,6 +148,11 @@ class Channel extends React.Component<ChannelProps, ChannelState> {
    * tabBar或drawer组件点击事件处理
    */
   private handleClick = (tab) => {
+    // 直播
+    if (tab.id === -1) {
+      window.location.href = "/live";
+      return;
+    }
     if (tab.id === 0) {
       window.location.href = "/index";
     } else {
@@ -206,6 +211,8 @@ class Channel extends React.Component<ChannelProps, ChannelState> {
     // 一级分类
     const tabBarData = [{ id: 0, name: "首页", children: []} as PartitionType]
       .concat(partitions);
+
+    tabBarData.push(new PartitionType(-1, "直播"));
 
     let currentTabIndex = tabBarData.findIndex((parittion) =>
       parittion.id === parseInt(m.params.rId, 10)
@@ -293,8 +300,8 @@ class Channel extends React.Component<ChannelProps, ChannelState> {
             <div className={style.recommendContent + " clear"}>
               {
                 this.state.recommendVideos.map((video, i) => {
-                  if (video.pic && video.pic.indexOf("@320w_@200h") === -1) {
-                    video.pic = this.getPicUrl(video.pic, "@320w_@200h");
+                  if (video.pic && video.pic.indexOf("@320w_200h") === -1) {
+                    video.pic = this.getPicUrl(video.pic, "@320w_200h");
                   }
                   return <VideoItem video={video} key={i} showStatistics={true} />
                 })
@@ -302,7 +309,7 @@ class Channel extends React.Component<ChannelProps, ChannelState> {
             </div>
           </div>
           {
-            isOneLevelAndChildrenGtTwo === true ?　(
+            isOneLevelAndChildrenGtTwo === true ? (
               this.state.partitions.map((partition) =>
                 <Partition data={partition} key={partition.id}
                   getPicUrl={(url, format) => this.getPicUrl(url, format)} />
@@ -314,7 +321,7 @@ class Channel extends React.Component<ChannelProps, ChannelState> {
         </div>
       </div>
     );
-  };
+  }
 }
 
 Channel.contextType = Context;

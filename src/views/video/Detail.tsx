@@ -32,8 +32,10 @@ const getPubdate = (timestamp) => {
           break;
         case 1:
           publicDateStr = "昨天";
+          break;
         case 2:
           publicDateStr = "前天";
+          break;
         default:
           publicDateStr = publicDate.getMonth() + 1 + "-" + publicDate.getDate();
       }
@@ -209,7 +211,14 @@ class Detail extends React.Component<DetailProps, DetailState> {
         {/* 内容 */}
         <div className={style.contentWrapper}>
           <div className={style.videoContainer}>
-            <VideoPlayer video={video} />
+            <VideoPlayer video={{
+                aId: video.aId,
+                cId: video.cId,
+                title: video.title,
+                cover: video.pic,
+                duration: video.duration,
+                url: video.url
+              }} />
           </div>
           {/* 视频信息 */}
           <div className={style.videoInfoContainer} ref={this.infoContainerRef}>
@@ -232,11 +241,11 @@ class Detail extends React.Component<DetailProps, DetailState> {
               </div>
               <div className={style.position}>
                 <a href="/index">主页</a>
-                <span>></span>
+                <span>&gt;</span>
                 <a href={"/channel/" + video.oneLevel.id}>{video.oneLevel.name}</a>
-                <span>></span>
+                <span>&gt;</span>
                 <a href={"/channel/" + video.twoLevel.id}>{video.twoLevel.name}</a>
-                <span>></span>
+                <span>&gt;</span>
                 <span className={style.aid}>av{video.aId}</span>
               </div>
             </div>

@@ -17,7 +17,7 @@ const webpackConfig = merge(baseWebpackConfig, {
   target: "node",  // 指定node运行环境
   externals: [
     nodeExternals({
-      whitelist: [/\.css$/]  // 忽略css，让webpack处理
+      whitelist: [ /\.css$/ ]  // 忽略css，让webpack处理
     })
   ],  // 不绑定node模块，保留为 require()
   module: {
@@ -40,6 +40,9 @@ const webpackConfig = merge(baseWebpackConfig, {
             options: {
               transpileOnly: true  // 只进行编译
             }
+          },
+          {
+            loader: "eslint-loader"
           }
         ],
         exclude: /node_modules/

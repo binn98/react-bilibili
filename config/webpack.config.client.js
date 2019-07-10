@@ -8,6 +8,8 @@ const util = require("./util");
 
 const isProd = process.env.NODE_ENV === "production";
 
+const resolve = relativePath => path.resolve(__dirname, relativePath);
+
 const webpackConfig = merge(baseWebpackConfig, {
   entry: {
     app: "./src/entry-client.tsx"
@@ -35,9 +37,12 @@ const webpackConfig = merge(baseWebpackConfig, {
               // 支持HMR和禁用类型检查，类型检查将使用ForkTsCheckerWebpackPlugin
               transpileOnly: true  
             }
+          },
+          {
+            loader: "eslint-loader"
           }
         ],
-        exclude: /node_modules/
+        include: [ resolve("../src") ]
       },
       ...util.styleLoaders({
         sourceMap: false,
@@ -71,8 +76,7 @@ const webpackConfig = merge(baseWebpackConfig, {
     // 在单独的进程中执行类型检查加快编译速度
     new ForkTsCheckerWebpackPlugin({
       async: false,
-      tsconfig: path.resolve(__dirname, "../tsconfig.json"),
-      tslint: path.resolve(__dirname, "../tslint.json")
+      tsconfig: resolve("../tsconfig.json")
     }),
     new LoadablePlugin({
       filename: "client-manifest.json",

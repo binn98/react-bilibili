@@ -1,5 +1,5 @@
 import * as React from "react";
-import Helmet from "react-helmet";
+import { Helmet } from "react-helmet";
 import Result from "./Result";
 import { getHotwords, getSuggests } from "../../api/search";
 import storage, { SearcHistory } from "../../util/storage";
@@ -145,7 +145,7 @@ class Search extends React.Component<any, SearchState> {
               ) : null
             }
           </div>
-          <span className={style.cancel} onClick={() => { window.history.back() }}>取消</span>
+          <span className={style.cancel} onClick={() => { window.history.back(); }}>取消</span>
         </div>
         {
           !this.state.keyword ? (
